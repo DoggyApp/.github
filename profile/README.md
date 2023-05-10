@@ -1,7 +1,5 @@
 ## Hi there 👋
 
-<!--
-
 1.0 Purpose 
 The purpose of the application is to provide dog trainers a platform on which they can record, and maintain notes on the dogs they are training. These notes are to comment on behavior and training progress. 
 
@@ -29,4 +27,4 @@ configured to provision AWS resources such as an API gateway and a dynamo DB dat
 "KubernetesArchitecture" - this has been deployed locally on MiniKube. However I plan on deploying a container hosting Jenkins 
 to the Cluster so that deployment of the microservices can be automated. 
 "Frontend"; "registry"; "APIGateway" - This has been deployed locally on Docker and on MiniKube 
--->
+
