@@ -18,7 +18,7 @@ configured to provision AWS resources such as an API gateway and a dynamo DB dat
 3.0 Dependencies 
 "CloudFormationArchitecture" - YAML 
 "KubernetesArchitecture" - YAML
-"Frontend" – Node and Angular 
+"Frontend" – Node and Angular 13 
 "Registry" – SpringBoot; Spring Web; Java 17 
 "APIGateway" - YAML and JSON 
 
