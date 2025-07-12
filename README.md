@@ -46,7 +46,7 @@ Each section had their own security consideration that I delve into in their res
       * interegrating security tools
       * deep diving into kubernetes security...
     > Delving more into application security and AWS security to make sure that the whole structure is secure...
-  - With the guidance of a robust monitoring system and application security, intergrate a payment system in case I decide to deploy something monetizeable.
+- With the guidance of a robust monitoring system and application security, intergrate a payment system in case I decide to deploy something monetizeable.
         > Develop login with JPT tokens.
         > Everything else? 
 
@@ -59,9 +59,13 @@ Appendix
 1.0 Current knowedge base 
 
 Managing and Troubleshooting PCs, Exams 220-1101 and 220-1102. Mike Meyers (A+ certified COPM001022717560) 
+
 CCNA 200-301 Offical Cert Guide. Wendell Odom (CCNA certified CSCO14594715) 
+
 (AWS Cloud Practitioner certified NLG17CCC7EBQQZWV) 
+
 (LFS101x: Introduction to Linux. Linux Foundation 4dfe9e9668784cae9e0d59fdff01b35b) 
+
 Full stack java development boot camp at Revature (Springboot and Angular) 
     - Spring 
         > Unit and Intergratin testing in Springboot 
