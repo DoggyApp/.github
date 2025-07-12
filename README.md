@@ -26,7 +26,7 @@ configured to provision AWS resources such as an API gateway and a dynamo DB dat
 "Registry" – SpringBoot; Spring Web; Java 17 
 
 5.0 Deployment 
-
+The Architecture in built on AWS so you can see how to deploy it in the CloudFormationArchitecture README. 
 
 6.0 CI/CD and testing 
 "CloudFormationArchitecture" - this has been deployed to AWS through CodePipeline 
@@ -38,9 +38,26 @@ to the Cluster so that deployment of the microservices can be automated.
 
 
 8.0 Roadmap 
+- Intergrate a pipeline for the frontend and backend using GitHub actions, so that proper development can begin on the application itself.
+    > It needs the core features of the application built. 
+    > It needs proper log-in controls and JPT tokens. 
+    > Probably much more that I haven't thought of. 
+- Perform a suit of testing... 
+    > load testing to ensure that the architecture can properly handle stress (after the features have been built out).
+    > Chaos testing.
+    > Intergration testing.
+    > Deep dive into the various forms of testing that an application needs... 
+- Deep dive into the monitoring suit...
+    > Collect logs and forward alerts not just from the frontend and backend but also from other namespaces.
+    > Learn more about the different metrics and how to interpret them and use them to optimize.
+    > Practice these skills in a security conscious way to alert to potential vulernabilites and exploitations. 
+- Bolster security... 
+    > Learn more about how to defend a Kubernetes architecture, such as...
+      * preventing communication across namespaces
+      * hardening nodes
+      * interegrating security tools
+      * deep diving into kubernetes security...
+    > Delving more into application security and AWS security to make sure that the whole structure is secure... 
 
+9.0 License 
 
-9.0 Contribute 
-
-
-10.0 License 
