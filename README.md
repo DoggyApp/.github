@@ -20,10 +20,10 @@ The Architecture in built on AWS so you can see how to deploy it in the CloudFor
 4.0 CI/CD and testing 
 "CloudFormationArchitecture" - this has been deployed to AWS through CodePipeline. The buildspec.yml is viewable in the CloudFormationArchitecture, as well as the master.yaml which it pulls from. The Pipeline itself was built via the console, but in includes changesets (that allow for changes in code to be applyed via the rollback of only changed elements and their dependencies, not the rollback of the entire deployemnt), a webhook to the GitHub repository which triggers on every "git push", and a S3 bucket and ec2 where the the project is saved and then built for deployment by AWS CodeBuild. 
 
-7.0 Security considerations and best practices 
+5.0 Security considerations and best practices 
 Each section had their own security consideration that I delve into in their respective README's in the CloudFormationArchitecture repository and the KubernetesArchitecture repository. 
 
-8.0 Roadmap (in this general order...) 
+6.0 Roadmap (in this general order...) 
 - Intergrate a pipeline for the frontend and backend using GitHub actions, so that proper development can begin on the application itself.
     > It needs the core features of the application built.
 - Deep dive into the monitoring suit...
@@ -41,5 +41,5 @@ Each section had their own security consideration that I delve into in their res
       * deep diving into kubernetes security...
     > Delving more into application security and AWS security to make sure that the whole structure is secure... 
 
-9.0 License 
+7.0 License 
 This is code is primarily for recruiters to evaluate my skills, I don't imagine people would find much use in? but if anyone you would like to then contact me at idanzigm@gmail.com, to ask permission. 
