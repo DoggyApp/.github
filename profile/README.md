@@ -26,6 +26,11 @@ The Architecture built foundationally on AWS CloudFormation so you can see how t
 
 Each section had their own security consideration that I delve into in their respective README's in the CloudFormationArchitecture repository and the KubernetesArchitecture repository.
 
+## 5.0 Demo 
+
+This is the full working application with all pods running 
+
+
 ## 6.0 Roadmap (in this general order...)
 
 - Intergrate a pipeline for the frontend and backend using GitHub actions, so that proper development can begin on the application itself.  
