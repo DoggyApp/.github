@@ -32,6 +32,30 @@ This is the full working application with all pods running
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-19-22.png)
 
+This is the application running, you can see the URL is being served by a load balancer 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-21-43.png) 
+
+Here is the sign that the application is properly connacting to the back and becuase the API call too the backend from the "test" button recieved "working" 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-22-38.png) 
+
+Here is the Simple Notification Service spinning up correctly and serving a confirmation request to my email. This happens automatically on the start up of the environment, and it done by the ansible script. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-27-49.png) 
+
+Here is the alert-analyzer correctly serving alerts through OpenAI, you can see that OpenAI correctly identified that the problem was that "Someone pressed the button" which is the hard coded exception that is called when you press the "test backed error" button on the webapp" 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-12-47.png) 
+
+Here is Grafana serving as it should be, for security and to minimize points of contact with the interent I am port forwarding from my Managment bastion to my local computer, which is why it is served on localhost 3000 (instructions for port forwarding are in the KubernetesArchitecture README). You will be able to explore and see that the data source is correctly set up, and see alerts. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-05-33.png) 
+
+Here you can see the CPU usage of the containers in my default namespace. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-47-33.png)
+
 
 ## 6.0 Roadmap (in this general order...)
 
