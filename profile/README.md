@@ -110,6 +110,9 @@ This code is primarily for recruiters to evaluate my skills and because I find i
     > Components and services  
     > Unit testing  
     > HTML manipulation
+  - Postgres
+    > SQL joins
+    > SQL Functions 
 
 ### 2.0 Currently working on
 
