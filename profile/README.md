@@ -30,6 +30,8 @@ Each section had their own security consideration that I delve into in their res
 
 This is the full working application with all pods running 
 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-19-22.png)
+
 
 ## 6.0 Roadmap (in this general order...)
 
