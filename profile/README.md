@@ -48,6 +48,10 @@ Here is the alert-analyzer correctly serving alerts through OpenAI, you can see 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-12-47.png) 
 
+Here you can see that client-side routing works, I types in "dev-server" into the URL because that is a common URL that bots scanning the internet will try to hit, but it will redirect to the Angular "not-found" component given any URL that does not match an nginx ingress defined path. this was helpful becuase it would trigger email alerts with errors everytime this happened, so now the alerts are quieter, becuase they are handled in browser. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-50-40.png)
+
 Here is Grafana serving as it should be, for security and to minimize points of contact with the interent I am port forwarding from my Managment bastion to my local computer, which is why it is served on localhost 3000 (instructions for port forwarding are in the KubernetesArchitecture README). You will be able to explore and see that the data source is correctly set up, and see alerts. 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-05-33.png) 
