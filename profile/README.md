@@ -48,7 +48,7 @@ Here is the alert-analyzer correctly serving alerts through OpenAI, you can see 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-12-47.png) 
 
-Here you can see that client-side routing works, I typed in "dev-server" into the URL because that is a common URL that bots scanning the internet will try to hit, but it will redirect to the Angular "not-found" component given any URL that does not match an nginx ingress defined path. This was helpful becuase it would trigger email alerts with errors everytime this happened, so now the alerts are quieter, becuase they are handled in browser. 
+Here you can see that client-side routing works, I typed in "dev-server" into the URL because that is a common URL that bots scanning the internet will try to hit, but it will redirect to the Angular "not-found" component given any URL that does not match an nginx ingress defined path. This was helpful becuase it would trigger email alerts with errors everytime this happened, so now the alerts are quieter, becuase they are handled in browser. (There is also rate limiting configured in the ingress that will hopefully stem some of these bad requests). 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-50-40.png)
 
