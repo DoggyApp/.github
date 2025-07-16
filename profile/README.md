@@ -100,19 +100,25 @@ This code is primarily for recruiters to evaluate my skills and because I find i
 - Managing and Troubleshooting PCs, Exams 220-1101 and 220-1102. Mike Meyers (A+ certified COPM001022717560)  
 - CCNA 200-301 Offical Cert Guide. Wendell Odom (CCNA certified CSCO14594715)  
 - AWS Cloud Practitioner certified NLG17CCC7EBQQZWV  
-- LFS101x: Introduction to Linux. Linux Foundation 4dfe9e9668784cae9e0d59fdff01b35b  
+- LFS101x: Introduction to Linux. Linux Foundation 4dfe9e9668784cae9e0d59fdff01b35b
+- Dive into Ansible - Beginner to expert in Ansible. James Spurin (Udemy).
+- Kubernetes hands on - Deploy microservices to the AWS cloud. Richard Chesterwood. (Udemy) 
 - Full stack java development boot camp at Revature (Springboot and Angular)  
   - Spring  
     > Unit and Intergratin testing in Springboot  
     > Spring MVC and Web  
   - Angular  
-    > HTTPCLient  
+    > HTTPClient  
     > Components and services  
     > Unit testing  
     > HTML manipulation
   - Postgres
     > SQL joins
-    > SQL Functions 
+    > SQL Functions
+
+### 1.1 Shout out 
+
+Brett Gillett - Deploying EKS using CloudFormation - Session #1. Session#2 and Session #3 (YouTube). He got me started on this journey. 
 
 ### 2.0 Currently working on
 
