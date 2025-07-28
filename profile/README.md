@@ -77,6 +77,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 - Bolster security...
   > Learn how to use Nessus to perform security scans.
+  > 
   > Learn more about how to defend a Kubernetes architecture, such as...  
   > * preventing communication across namespaces  
   > * hardening nodes  
