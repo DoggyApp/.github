@@ -76,8 +76,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > Deep dive into the various forms of testing that an application needs (the monitoring suit will be helpful here...)
 
 - Bolster security...
-  > Learn how to use Nessus to perform security scans.
-  > 
+  > Learn how to use Nessus to perform security scans.  
   > Learn more about how to defend a Kubernetes architecture, such as...  
   > * preventing communication across namespaces  
   > * hardening nodes  
