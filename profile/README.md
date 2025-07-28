@@ -75,7 +75,8 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > Load testing to ensure that the architecture can properly handle stress.  
   > Deep dive into the various forms of testing that an application needs (the monitoring suit will be helpful here...)
 
-- Bolster security...  
+- Bolster security...
+  > Learn how to use Nessus to perform security scans. 
   > Learn more about how to defend a Kubernetes architecture, such as...  
   > * preventing communication across namespaces  
   > * hardening nodes  
@@ -85,7 +86,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 - With the guidance of a robust monitoring system and application security, intergrate a payment system in case I decide to deploy something monetizeable.  
   > Develop login with JPT tokens.  
-  > Everything else?
+  > Use the Nessus security scans to enure that I am PCI compliant. 
 
 ## 7.0 License
 
