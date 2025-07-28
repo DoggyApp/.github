@@ -56,7 +56,7 @@ Here is Grafana serving as it should be, for security and to minimize points of 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-05-33.png) 
 
-Here you can see the CPU usage of the containers in my default namespace, this being a registry and 2 web application that are running at the moment. 
+Here you can see the CPU usage of the containers in my default namespace, this being the registry, webapp and ingress that are running at the moment. 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-47-33.png)
 
