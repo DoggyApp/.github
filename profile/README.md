@@ -63,8 +63,9 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 ## 6.0 Roadmap (in this general order...)
 
-- Intergrate a pipeline for the frontend and backend using GitHub actions, so that proper development can begin on the application itself.  
-  > It needs the core features of the application built (though I'm more interested in the Kubernetes set up, so a lot of this might end up being the last thing I do and most of this is probably going to happen on elastic beanstalk...)
+- Build a dedicated testing environment for the application on ElasticBeanstalk and intergrate a pipeline for the frontend and backend, so that proper development can begin on the application itself.  
+  > It needs the core features of the application built (though I'm more interested in the Kubernetes set up, so a lot of this might end up being the last thing I do ...)
+  > Also Development of the application shouldn't happen in the production environment both for cost and for security. 
 
 - Deep dive into the monitoring suit...  
   > Collect logs and forward alerts not just from the frontend and backend but also from other namespaces and pods.  
@@ -83,8 +84,10 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > * interegrating security tools  
   > * deep diving into kubernetes security...  
   > Delving more into application security and AWS security to make sure that the whole structure is secure...
+  > * Implement AWS WAF and maybe CloudWatch, or see what I can do with Grafana and Loki.
+  > * Implement AWS security scanning features and see how they compare to Nessus (using multiple scanning tools provides defence in depth). 
 
-- With the guidance of a robust monitoring system and application security, intergrate a payment system in case I decide to deploy something monetizeable.  
+- With the guidance of a robust monitoring system and Nessus, intergrate a payment system in case I decide to deploy something monetizeable. And also as an abitious learning experience  
   > Develop login with JPT tokens.  
   > Use the Nessus security scans to enure that I am PCI compliant. 
 
