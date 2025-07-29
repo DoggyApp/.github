@@ -64,7 +64,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 ## 6.0 Roadmap (in this general order...)
 
 - Build a dedicated testing environment for the application on ElasticBeanstalk and intergrate a pipeline for the frontend and backend, so that proper development can begin on the application itself.  
-  > It needs the core features of the application built (though I'm more interested in the Kubernetes set up, so a lot of this might end up being the last thing I do ...)
+  > It needs the core features of the application built (though I'm more interested in the Kubernetes set up, so a lot of this might end up being the last thing I do ...)  
   > Also Development of the application shouldn't happen in the production environment both for cost and for security. 
 
 - Deep dive into the monitoring suit...  
