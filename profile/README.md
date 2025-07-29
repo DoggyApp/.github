@@ -89,7 +89,10 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 - With the guidance of a robust monitoring system and Nessus, intergrate a payment system in case I decide to deploy something monetizeable. And also as an abitious learning experience  
   > Develop login with JPT tokens.  
-  > Use the Nessus security scans to enure that I am PCI compliant. 
+  > Use the Nessus security scans to enure that I am PCI compliant.
+
+- Potentially see if I can run the nodes, or the bastion on Spot Instances to lower costs, at the moment it's just a demo project, and there is no perminant storage on it.  
+  > Create a helper tool that will identify the best spots to run the nodes and bastion, and can automatically redeploy it if I'm ejected. The ansible script is indepotent so I don't have to worry about the bastion start up script creating any issues with the cluster. 
 
 ## 7.0 License
 
