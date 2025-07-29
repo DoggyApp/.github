@@ -65,7 +65,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 - Build a dedicated testing environment for the application on ElasticBeanstalk and intergrate a Jenknins pipeline for the frontend and backend, so that proper development can begin on the application itself.   
   > It needs the core features of the application built   
-  > Also Development of the application shouldn't happen in the production environment both for cost and for security.
+  > Also Development of the application shouldn't happen in the production environment both for cost and for security.  
   > It would be ideal if I could also feature a staging environment where the application could automatically deploy to production after the tests have passed, I would be shocked if Jenkins couldn't this. 
 
 - Deep dive into the monitoring suit...  
