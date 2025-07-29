@@ -63,9 +63,10 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 ## 6.0 Roadmap (in no general order...)
 
-- Build a dedicated testing environment for the application on ElasticBeanstalk and intergrate a pipeline for the frontend and backend, so that proper development can begin on the application itself.  
-  > It needs the core features of the application built (though I'm more interested in the Kubernetes set up, so a lot of this might end up being the last thing I do ...)  
-  > Also Development of the application shouldn't happen in the production environment both for cost and for security. 
+- Build a dedicated testing environment for the application on ElasticBeanstalk and intergrate a Jenknins pipeline for the frontend and backend, so that proper development can begin on the application itself.   
+  > It needs the core features of the application built   
+  > Also Development of the application shouldn't happen in the production environment both for cost and for security.
+  > It would be ideal if I could also feature a staging environment where the application could automatically deploy to production after the tests have passed, I would be shocked if Jenkins couldn't this. 
 
 - Deep dive into the monitoring suit...  
   > Collect logs and forward alerts not just from the frontend and backend but also from other namespaces and pods.  
@@ -81,22 +82,22 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > Learn more about how to defend a Kubernetes architecture, such as...  
   > * preventing communication across namespaces  
   > * hardening nodes  
-  > * interegrating security tools  
+  > * intergrating security tools  
   > * deep diving into kubernetes security...  
   > Delving more into application security and AWS security to make sure that the whole structure is secure...
   > * Implement AWS WAF and maybe CloudWatch, or see what I can do with Grafana and Loki.
   > * Implement AWS security scanning features and see how they compare to Nessus (using multiple scanning tools provides defence in depth). 
-
-- With the guidance of a robust monitoring system and Nessus, intergrate a payment system in case I decide to deploy something monetizeable. And also as an abitious learning experience  
-  > Develop login with JPT tokens.  
-  > Use the Nessus security scans to enure that I am PCI compliant.
 
 - Potentially see if I can run the nodes, or the bastion on Spot Instances to lower costs, at the moment it's just a demo project, and there is no perminant storage on it.  
   > Create a helper tool that will identify the best spots to run the nodes and bastion, and can automatically redeploy it if I'm ejected. The ansible script is indepotent so I don't have to worry about the bastion start up script creating any issues with the cluster.
 
 - Intergrate permanent storage on the cluster and see if I can start a Postgres database.
 
-- Rewrite the CloudFormation code in Terraform, just so I can pick it up. 
+- Rewrite the CloudFormation code in Terraform, just so I can pick it up.
+
+- With the guidance of a robust monitoring system and Nessus, intergrate a payment system in case I decide to deploy something monetizeable. This is a longterm stretch ambition.  
+  > Develop login with JPT tokens.  
+  > Use the Nessus security scans to enure that I am PCI compliant.
 
 ## 7.0 License
 
