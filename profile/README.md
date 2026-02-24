@@ -15,7 +15,7 @@ The purpose of the application is to provide dog trainers a platform on which th
 - "registry" is where server side logic will be performed, eventually making requests to a DynamoDB database.
 
 ## 3.0 Network Diagram 
-Edit: I moved the MGMT Bastion to be private subnet 
+Edit: I moved the MGMT Bastion to be private subnet   
 Edit: There is a single Node group that spans both availability zones 
 ![Alt text](https://github.com/DoggyApp/CloudFormationArchitecture/blob/main/DoggyAppCFArchitectureDiagram.jpg)
 
