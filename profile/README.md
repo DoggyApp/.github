@@ -14,19 +14,22 @@ The purpose of the application is to provide dog trainers a platform on which th
 - "Frontend" is the GUI were users (dog trainers) will navigate and place their requests.  
 - "registry" is where server side logic will be performed, eventually making requests to a DynamoDB database.
 
-## 3.0 Deployment
+## 3.0 Network Diagram 
+![Alt text](https://github.com/DoggyApp/CloudFormationArchitecture/blob/main/DoggyAppCFArchitectureDiagram.jpg)
+
+## 4.0 Deployment
 
 The Architecture built foundationally on AWS CloudFormation so you can see how to deploy it in the CloudFormationArchitecture README.
 
-## 4.0 CI/CD and testing
+## 5.0 CI/CD and testing
 
 **"CloudFormationArchitecture"** - this has been deployed to AWS through CodePipeline. The buildspec.yml is viewable in the CloudFormationArchitecture, as well as the master.yaml which it pulls from. The Pipeline itself was built via the console, but in includes changesets (that allow for changes in code to be applyed via the rollback of only changed elements and their dependencies, not the rollback of the entire deployemnt), a webhook to the GitHub repository which triggers on every "git push", and a S3 bucket and ec2 where the the project is saved and then built for deployment by AWS CodeBuild.
 
-## 5.0 Security considerations and best practices
+## 6.0 Security considerations and best practices
 
 Each section had their own security consideration that I delve into in their respective README's in the CloudFormationArchitecture repository and the KubernetesArchitecture repository.
 
-## 5.0 Demo 
+## 7.0 Demo 
 
 This is the full working application with all pods running. 
 
@@ -61,7 +64,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-47-33.png)
 
 
-## 6.0 Roadmap (in no general order...)
+## 8.0 Roadmap (in no general order...)
 
 - Build a dedicated testing environment for the application on ElasticBeanstalk and intergrate a Jenknins pipeline for the frontend and backend, so that proper development can begin on the application itself.   
   > It needs the core features of the application built   
@@ -99,7 +102,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > Develop login with JPT tokens.  
   > Use the Nessus security scans to enure that I am PCI compliant.
 
-## 7.0 License
+## 9.0 License
 
 This code is primarily for recruiters to evaluate my skills and because I find it fun, I don't imagine people would find much use in? But if anyone you would like to then contact me at idanzigm@gmail.com to ask permission.
 
