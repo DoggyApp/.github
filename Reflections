@@ -34,6 +34,15 @@ the breakdowns were happening. I don't understand how anyone ever built anything
 place in a pipeline, creating web hooks, adding permissions to the GitHub API and handling keys. The whole process of validating the process, a lot can be automated, 
 but security cannot be, becuase it requires a human who owns the process to allow the automation. 
 
+VPC setup 
+This required me to learn the fundamental of networking, I earned my CCNA so that I could go back and validate this. WHen I wrote it I was copying tutorials and didn't
+even know that 172.16.0.0 IP addresses were private. This made it difficult to know that Kube clusters are meant to be in private subnets, I didn't know about DMZs and
+that that is what I was building. But earning my CCNA made going back to this and reviewing my work much more meaningful. I learned a lof of the fundamentals of route 
+tables, VPC, Subnets and how implement them and string them together. The point of having public vs private subnets, especially now that I have a loadbalancer standing 
+in front of everything. It also taught me about security groups, EC2 images and launch templates, setting up the management bastion required me to grapple with the size 
+of it and having to grow it to really start developing the application and not just the environemnt, it went from a t3Medium to be t3Large to meet the memory requirements. 
+I didn't know what UserData was before but knowing that I could run a script at start up made the process of automation very obvious. 
+
 Kubernetes Set Up 
 This was a difficult one to wrap my head around. I had done simple things like written pods and services locally, but there is a lot more going into a cloud deployment. 
 One of the first decision I had to make was a log collection and if i would hook my cluster up to CloudWatch or other AWS services i decided not to becuase of the cost. 
@@ -76,7 +85,7 @@ could gracefully go fuck themselves. I also implemented rate limiting on the Loa
 analysis can go, this was a very simple script and caught a very simple attack, and I realise the need for more knowledge on how to implement stronger log analysis 
 to catch more complex attacks, and also to be aware that logs can be altered and to incorporate metrics into a defensive posture. 
 
-Developing the application 
+Moving on to development of the application 
 This is where I started vibe coding a lot, I bought Claude and have been using Claude code in my IDE. It was sort of ridiculous to see how fast it was able to produce 
 code that I actually had to slow down and realize that I was losing track of my code base at times. Things like catching errors in its work and making sure that it was
 secure made me realise that I needed a pipeline, so after getting the bare bones out of the way, the first thing I did was set up GitLab on my Managemnt bastion and 
@@ -84,6 +93,50 @@ create pipelines for the application.
 
 GitLab 
 This was anothing thing that AI was helful for, I asked it to write detailed instructions for how to set up GitLab and they were mostly right, but I definately had to
-do a lot of leg work to research how to set it up, so I understood is indepently from an AI synopsis, to ask questions about process and to make my own architectural 
-decisions that contradicted the instructions that were fed me. 
+do a lot of leg work to research how to set it up, so I could understand is indepently from an AI synopsis, to ask questions about process and to make my own 
+architectural decisions that contradicted the instructions that were fed me. GitLab works the same as CodePipeline in essense. You run a bunch of Linux commands in 
+order. The difference was in the complexity of making it run on Kubernetes and as a service hosted on my bastion rather than having that leg work done for me by AWS. 
+This entailed installing GitLab on my instance and giving it the permissions TO BE ACCESSED BY the runner and AgentK, there are 2 separate tokens needed to do this. The 
+agent token and the runner token. The Runner token is like the Linux instance that runs the build script in CodePipeline, it executes the commands, builds an image 
+and sends it to ECR. It then sends the deploy command back to GitLab running on my bastion which readies it for AgentK to call, AgentK is a pod with a RBAC permission 
+to access the Kube API, UNDER A NARROW BAND OF CONFIGURED CONDITIONS (that the GitLab instance has the proper Token and that the project being deployed is in the configured
+allow list). 
+
+Application Architecture 
+The application started out monolithic but I quickly realised that it made more sense to break it up into 3 different microservice. The nature of the application of owners
+connecting dogs with care organisations to employees under those organisations handling the dogs made it clear that there werer 3 different sets of users, owners, 
+organizations and emplyees. Each of these three groups would use the application at different rates, for different purposes, and with different amounts of each type of 
+user. A single monolithic architecture for that wouldn't be very sensible. So In the frontend I created 3 services, owner service, user service and organization service 
+and I created a backend or each service. This meant that each service handle a single type of user and that each user can authenticate to their repecive backend. 
+
+Coding the application
+This is where I was able to take my vibe coding and really test it on the screen that it worked and did what it was supposed to. I resolved errors like lazy initialization,
+open up the API calls needed for resistration in SpringSecurity, tweaked the components on the frontend so the the features functioned on the frontend how I wanted. 
+I got a better sense of how to effectively use AI, like when implementing features I needed to ensure that the API call from the frontend traveled all the way to the 
+database, I took a fine toothed approach to developing the application and told it to implement features one API call at a time, ensure that each through line was 
+implemented throughly. 
+
+Security Considerations in the application 
+there were a few benchmarks I wanted to hit and I was checking the AI make sure that they were done correctly. 
+1. I wanted the passwords to be encrypted 
+2. I wanted the makesure that PII wasn't leaked so I checked the sessions against the database in eveery API call so that it was certain that if someone was lookinng at a 
+piece of information it was tied to what they should be allowed to look at. Like when an Owner calls GetDog to see their own dog the api call is not GetDog(dogId) it is 
+GetDog(dogID, OwnerID), and it validates against the database the sessions of the logged in owner that they can only see their own dog. 
+3. I made sure that there was Password validation on the frontend, I used NIST guidelines, the recommendation being that you check the password not for complexity but 
+against a list of the most commonly bruteforced passwords to make sure that it is not easily guessed I used an inbuilt dependency in Angluar for this zxcvbn. I chose 
+to do it this way because as a short cut when I was developing I didn't add password validation, and made all of the test passwords "pass" just to make life easier for 
+myself. My Norton password manager saved this and 3 second later notified me that my password had been stolen. So I deleted all of the users in my database and started
+over with proper validation, using my password manager to save these passwords. 
+4. SpringSecurity is configured to only accepts traffic originating from the doggyapp.click address, hopefully meaning that XSRF attacks will be styied. 
+5. I registered an address for the site so that I could attach a certificate to it and connect it to my loadbalancer. This means that it is HTTPS. Which was suprisingly 
+easy to do with AWS and Kubernetes as the core technologies. 
+
+Cost 
+I wanted to be able to afford to host this, so I provisioned the Kube node instances as spot instances and this has shaved off half the cost from my monthy expenses
+and only at the cost of kubernetes having to repovision them for me, which it does automatically given that I gave it an Autoscaler through helm. 
+
+Next step 
+The Autoscaler that I gave it has backfired on me. For high avaiablity I configured my cluster to extend 2 availability zones, US-East-1a and Us-East-ib. But I provisioned 
+by database on an EBS file, this only extends to 1 availablity zone. Meaning that when my stateful set was torn from the spot instance and reestablised in a differnt AZ 
+The database failed, becuase the block storage was in the wrong place. For true high availablity I will need to switch from EBS to something better like EFS. 
 
