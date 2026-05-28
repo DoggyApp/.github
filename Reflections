@@ -1,0 +1,89 @@
+This is a ordered sequence of refelctions on the process of building the DoggyApp. Many are being done well after the time that I wrote the code but these are the learning expereinces that stuck with me. 
+
+Cloud Formation Development
+I was struck by how well developed the AWS documentation is. Using CLoudFormation you are able to see all details of the configuration of the resource you are 
+provisioning, these details link to fuller documation on the details of each resource and service, and it is all layed out in yaml format so you can just understand 
+it at the level of what you're coding by looking at it. Choosing to begine with CloudFormation was a good choice becuase it gave me a full grasp of the configuration 
+option of each resource a provided a detailed understanding of the capabilities and use of the AWS platform. Still to this day whenever I need to provision something 
+I will default to writing the code in CloudFormation and deploying it from there. This way I only have to memorize a single command, I can specify all details of the 
+resource I am provisioning and know exactly what it is and delete it afterwards with the assurance that all traces of it will be gone, with the added benefit of being 
+ability to see all of my resources in the CloudFormation console, my full 1 stop location to see all resources in my entire AWS environment. If a resource fails to 
+deploy I can see the stack trace and if I need to automate its deployment I can put it into an Ansible Script. It is so incredibly helpful to have everything written 
+down, to know what it is, and to automate its deployment, and also to be able to pass variables out of CloudFormation and into Ansible so that they can be used in a 
+larger script. 
+
+Debugging CloudFormation 
+Keeping track of variables is key in CloudFormation, you need to make sure that variable names are passed properly so that dependencies can build on each other. 
+It can become a bit of a convoluded mess whe you have to take a variable out of the Stack, pass it into the Master File, then from the Master file and into another 
+Stack, and there are three different stacks that all have a dependency that needs to be passed in. This was a source of mild frustration where a variable name didn't ]
+match. AI has been helpful in solving this, it is a simple thing for an AI to just check variable names and make sure that they are consistent, becuase it is just a 
+"grep" command for them. But there are also architectural challenges the first being permissions AWS IAM roles and users need to be crafted to make sure that the CF 
+script is able to run. At one point I was manually running the pipeline for my K8s cluster over and over and copy pasting the perission error (containing the missing
+permission) into my IAM role for the pipeline. This was painful, but better than allowing * permissions. Stack Overflow and online tutorials were a helpful resource 
+to get myself off the ground, AI was much less developed at the time, and for something as important as permissionos I wouldn't entirely trust it becuase I wouldn't 
+want my personal account to be suseptable to escalation attacks. But the process familiarised me with tracing logs in CF and using them to debug. It also familiarised 
+me with the different permissions used in EKS, EC2, Secrets, Keys and other services.
+
+CodePipeline 
+This was my first taste of CI/CD it gave me knowledge of the different build phases. I was surprised that all it is is running linux commands. I saw that Code Build 
+provisions a linux instance. Then you run to Lint and build commandd and are able to see the logs for each command so you can follow where it broke. Lint runs a 
+simple linter over the CF code to make sure that it is valid, then builds the master yaml file for CF, saves it to an S3 Bucket which can be used for versioning, 
+though I didn't, and then CodePipeline takes that built file and runs it though CF to deploy. I really got a sense of how useful this was by developing the script 
+in tandem with the Pipeline. Like it made the whole process so much faster to just press a button and see if it works, and to get specific logs and visions on where 
+the breakdowns were happening. I don't understand how anyone ever built anything functional without a pipeline. It was also good to see the security that goes in 
+place in a pipeline, creating web hooks, adding permissions to the GitHub API and handling keys. The whole process of validating the process, a lot can be automated, 
+but security cannot be, becuase it requires a human who owns the process to allow the automation. 
+
+Kubernetes Set Up 
+This was a difficult one to wrap my head around. I had done simple things like written pods and services locally, but there is a lot more going into a cloud deployment. 
+One of the first decision I had to make was a log collection and if i would hook my cluster up to CloudWatch or other AWS services i decided not to becuase of the cost. 
+I felt that I hadn't run into a use case for it yet and so I would cross that bridge when I got there. I did end up using grafana and prometheus for monitoring later 
+though after i had built the cluster the first thing I wanted was insight into it so that coudl see in detail what it was that I had built and how it was working. I 
+felt that as the development process continues this sort of insight (especially as this was the first cluster I had built and I didn't know what I was doing), would be 
+valuable. However the first hurdle was accessing the cluster. I was trying to use my Admin User profile to access the cluster naively thinking that it had permissions 
+to EKS all resources and so that would allow me to enter. This was not the case. You need the role of the Entity or user who created the cluster to access the RBAC. 
+This meant that I needed to use my pipeline role (the creating entity) to access the RBAC. From here I was able to edit the RBAC to add the Admin user to the cluster 
+and begin management of it. With this the Admin has access to EKS commands (outlined in the IAM role), and now also has RBAC access to the Kube commands (the EKS 
+commands will not run without RBAC access, though you can run Kube commands without IAM permissions but with RBAC). But with the Admin having access to both this role 
+was able to set up periferal AWS services to enable the full set up of the cluster. Additionally, this Admin requires sign on and 2-factor authenitcation (using IAM 
+Idenitty Center) securing the Cluster behind a sturdier wall. The Ansible script for this is in the Kubernetes Architecture. 
+
+Ansible 
+Writting an Ansible script was incedibly helpful for the process of deploying the application. Not only does it resure me that i fix any issue if I accidently delete 
+something I shouldn't (which I did once). It also means that (in the early stages) I can delete my entire application and redploy it exactly as it was. It seems like 
+good hygene to have a record of all changes that can be reimplemented at any point. The key being that it is indempotent, meaning that no matter what breaks you can 
+run the script and it will fix it and leave everything else as is. It is the ultimate tool for self healing and version control. The flip side to this is that I also 
+have a Breakdown script that will delete everything. This gives me great peace of mind to know that I will have no remaining surprise billing from stragling resources. 
+
+Prometheus Grafana Loki 
+In this setup I encorporated monitoring, as I said I felt it important to have insight into what I had built. I was unfamiliar with the technology I was using and 
+for all I knew it could be experiencing disastrous error having all sorts of problems. For this I learned about Helm. It was an extremely convenient tool for 
+provisioning the monitoring suit. All I had to do was write the configuration scripts correctly as it was able to implement them. What I found suprising about this 
+process was how modular it was, I just have to input the correct file names for where the logs where coming from and wire it up to Loki's API, then wire up Loki's API 
+to the Prometheus end point. You can deploy all of these in any order and it will work, none of them are dependent on each other. The worst that will happen is that 
+messages get sent to an end point that doesn't exist. 
+
+The second thing that struck me was how versatile the prometheus language is for detecting key words in logs and generating alerts off of them. I was mainly curious 
+about how to use them and knowing that my application was going to be published to the open internet I decided to create simple alerts that detected the word 
+"error" in my Spring and Angular applications, hoping to catch any foul play or just problems with the application. 
+
+The alerting pod 
+It was awesome to see in real time how helpful monitoring is for security. I connected my montoring suit to a Gunicorn webhook which took these alerts fed them through 
+OpenAI and sent me information on what caused them. No sooner did this go live than I started recieving multple alerts in my Angular application from bots entering 
+URLs into my application like "/production-server". This prompted me to learn more about what was going on and how to resolve the issue. I had no idea that these 
+things where everywhere for one. But also I figured out that the best practice for dealing with it was to create a "not found" page where these sorts of requests 
+could gracefully go fuck themselves. I also implemented rate limiting on the Loadbalancer. This expereince does give me a new appreciation for teh depth that log 
+analysis can go, this was a very simple script and caught a very simple attack, and I realise the need for more knowledge on how to implement stronger log analysis 
+to catch more complex attacks, and also to be aware that logs can be altered and to incorporate metrics into a defensive posture. 
+
+Developing the application 
+This is where I started vibe coding a lot, I bought Claude and have been using Claude code in my IDE. It was sort of ridiculous to see how fast it was able to produce 
+code that I actually had to slow down and realize that I was losing track of my code base at times. Things like catching errors in its work and making sure that it was
+secure made me realise that I needed a pipeline, so after getting the bare bones out of the way, the first thing I did was set up GitLab on my Managemnt bastion and 
+create pipelines for the application. 
+
+GitLab 
+This was anothing thing that AI was helful for, I asked it to write detailed instructions for how to set up GitLab and they were mostly right, but I definately had to
+do a lot of leg work to research how to set it up, so I understood is indepently from an AI synopsis, to ask questions about process and to make my own architectural 
+decisions that contradicted the instructions that were fed me. 
+
