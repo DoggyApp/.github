@@ -4,7 +4,7 @@ Cloud Formation Development
 I was struck by how well developed the AWS documentation is. Using CLoudFormation you are able to see all details of the configuration of the resource you are 
 provisioning, these details link to fuller documation on the details of each resource and service, and it is all layed out in yaml format so you can just understand 
 it at the level of what you're coding by looking at it. Choosing to begine with CloudFormation was a good choice becuase it gave me a full grasp of the configuration 
-option of each resource a provided a detailed understanding of the capabilities and use of the AWS platform. Still to this day whenever I need to provision something 
+option of each resource and provided a detailed understanding of the capabilities and use of the AWS platform. Still to this day whenever I need to provision something 
 I will default to writing the code in CloudFormation and deploying it from there. This way I only have to memorize a single command, I can specify all details of the 
 resource I am provisioning and know exactly what it is and delete it afterwards with the assurance that all traces of it will be gone, with the added benefit of being 
 ability to see all of my resources in the CloudFormation console, my full 1 stop location to see all resources in my entire AWS environment. If a resource fails to 
@@ -15,7 +15,7 @@ larger script.
 Debugging CloudFormation 
 Keeping track of variables is key in CloudFormation, you need to make sure that variable names are passed properly so that dependencies can build on each other. 
 It can become a bit of a convoluded mess whe you have to take a variable out of the Stack, pass it into the Master File, then from the Master file and into another 
-Stack, and there are three different stacks that all have a dependency that needs to be passed in. This was a source of mild frustration where a variable name didn't ]
+Stack, and there are three different stacks that all have a dependency that needs to be passed in. This was a source of mild frustration where a variable name didn't
 match. AI has been helpful in solving this, it is a simple thing for an AI to just check variable names and make sure that they are consistent, becuase it is just a 
 "grep" command for them. But there are also architectural challenges the first being permissions AWS IAM roles and users need to be crafted to make sure that the CF 
 script is able to run. At one point I was manually running the pipeline for my K8s cluster over and over and copy pasting the perission error (containing the missing
@@ -26,7 +26,7 @@ me with the different permissions used in EKS, EC2, Secrets, Keys and other serv
 
 CodePipeline 
 This was my first taste of CI/CD it gave me knowledge of the different build phases. I was surprised that all it is is running linux commands. I saw that Code Build 
-provisions a linux instance. Then you run to Lint and build commandd and are able to see the logs for each command so you can follow where it broke. Lint runs a 
+provisions a linux instance. Then you run to Lint and build commands and are able to see the logs for each command so you can follow where it broke. Lint runs a 
 simple linter over the CF code to make sure that it is valid, then builds the master yaml file for CF, saves it to an S3 Bucket which can be used for versioning, 
 though I didn't, and then CodePipeline takes that built file and runs it though CF to deploy. I really got a sense of how useful this was by developing the script 
 in tandem with the Pipeline. Like it made the whole process so much faster to just press a button and see if it works, and to get specific logs and visions on where 
@@ -45,10 +45,10 @@ I didn't know what UserData was before but knowing that I could run a script at 
 
 Kubernetes Set Up 
 This was a difficult one to wrap my head around. I had done simple things like written pods and services locally, but there is a lot more going into a cloud deployment. 
-One of the first decision I had to make was a log collection and if i would hook my cluster up to CloudWatch or other AWS services i decided not to becuase of the cost. 
+One of the first decision I had to make was on log collection and if i would hook my cluster up to CloudWatch or other AWS services i decided not to becuase of the cost. 
 I felt that I hadn't run into a use case for it yet and so I would cross that bridge when I got there. I did end up using grafana and prometheus for monitoring later 
 though after i had built the cluster the first thing I wanted was insight into it so that coudl see in detail what it was that I had built and how it was working. I 
-felt that as the development process continues this sort of insight (especially as this was the first cluster I had built and I didn't know what I was doing), would be 
+felt that as the development process continued this sort of insight (especially as this was the first cluster I had built and I didn't know what I was doing), would be 
 valuable. However the first hurdle was accessing the cluster. I was trying to use my Admin User profile to access the cluster naively thinking that it had permissions 
 to EKS all resources and so that would allow me to enter. This was not the case. You need the role of the Entity or user who created the cluster to access the RBAC. 
 This meant that I needed to use my pipeline role (the creating entity) to access the RBAC. From here I was able to edit the RBAC to add the Admin user to the cluster 
@@ -58,7 +58,7 @@ was able to set up periferal AWS services to enable the full set up of the clust
 Idenitty Center) securing the Cluster behind a sturdier wall. The Ansible script for this is in the Kubernetes Architecture. 
 
 Ansible 
-Writting an Ansible script was incedibly helpful for the process of deploying the application. Not only does it resure me that i fix any issue if I accidently delete 
+Writting an Ansible script was incedibly helpful for the process of deploying the application. Not only does it resure me that I can fix any issue if I accidently delete 
 something I shouldn't (which I did once). It also means that (in the early stages) I can delete my entire application and redploy it exactly as it was. It seems like 
 good hygene to have a record of all changes that can be reimplemented at any point. The key being that it is indempotent, meaning that no matter what breaks you can 
 run the script and it will fix it and leave everything else as is. It is the ultimate tool for self healing and version control. The flip side to this is that I also 
@@ -66,24 +66,28 @@ have a Breakdown script that will delete everything. This gives me great peace o
 
 Prometheus Grafana Loki 
 In this setup I encorporated monitoring, as I said I felt it important to have insight into what I had built. I was unfamiliar with the technology I was using and 
-for all I knew it could be experiencing disastrous error having all sorts of problems. For this I learned about Helm. It was an extremely convenient tool for 
-provisioning the monitoring suit. All I had to do was write the configuration scripts correctly as it was able to implement them. What I found suprising about this 
-process was how modular it was, I just have to input the correct file names for where the logs where coming from and wire it up to Loki's API, then wire up Loki's API 
-to the Prometheus end point. You can deploy all of these in any order and it will work, none of them are dependent on each other. The worst that will happen is that 
-messages get sent to an end point that doesn't exist. 
+for all I knew it could be experiencing disastrous errors and having all sorts of problems. For this I learned about Helm. It was an extremely convenient tool for 
+provisioning the monitoring suit. All I had to do was write the configuration files correctly and it was able to implement them with a single command. What I found 
+suprising about this process was how modular it all was, I just have to input the correct file names for where the logs where coming from and wire it up to Loki's API, 
+then wire up Loki's API to the Prometheus end point. You can deploy all of these in any order and it will work, none of them are dependent on each other. The worst 
+that will happen is that messages get sent to an end point that doesn't exist (which happened a number of times). But i found that the cleanest way to set up the 
+environment was just to write detailed configuration files. Going into the Grafana gui and setting things up from there is going to be error prone, if you understand 
+the configuration files you can do so much and just have it all work from an Ansible script so if you delete your instance of prometheus, single button click and you 
+have all of your alert rules back and running as if nothing happened, it's good disaster recovery. 
 
-The second thing that struck me was how versatile the prometheus language is for detecting key words in logs and generating alerts off of them. I was mainly curious 
-about how to use them and knowing that my application was going to be published to the open internet I decided to create simple alerts that detected the word 
-"error" in my Spring and Angular applications, hoping to catch any foul play or just problems with the application. 
+The second thing that struck me was how versatile the prometheus language is for detecting key words in logs and generating alerts off of them as well as being able to
+generate alerts based off of metrics. I was mainly curious about how to use them and knowing that my application was going to be published to the open internet I decided 
+to create simple alerts that detected the word "error" in my Spring and Angular applications, hoping to catch any foul play or just problems with the application. 
 
 The alerting pod 
 It was awesome to see in real time how helpful monitoring is for security. I connected my montoring suit to a Gunicorn webhook which took these alerts fed them through 
 OpenAI and sent me information on what caused them. No sooner did this go live than I started recieving multple alerts in my Angular application from bots entering 
 URLs into my application like "/production-server". This prompted me to learn more about what was going on and how to resolve the issue. I had no idea that these 
 things where everywhere for one. But also I figured out that the best practice for dealing with it was to create a "not found" page where these sorts of requests 
-could gracefully go fuck themselves. I also implemented rate limiting on the Loadbalancer. This expereince does give me a new appreciation for teh depth that log 
+could gracefully go fuck themselves. I also implemented rate limiting on the Loadbalancer. This expereince does give me a new appreciation for the depth that log 
 analysis can go, this was a very simple script and caught a very simple attack, and I realise the need for more knowledge on how to implement stronger log analysis 
-to catch more complex attacks, and also to be aware that logs can be altered and to incorporate metrics into a defensive posture. 
+to catch more complex attacks, and also to be aware that logs can be altered and to incorporate metrics into a defensive posture. I see a lot of room for me to grow 
+in using monitoring suits. 
 
 Moving on to development of the application 
 This is where I started vibe coding a lot, I bought Claude and have been using Claude code in my IDE. It was sort of ridiculous to see how fast it was able to produce 
@@ -97,39 +101,50 @@ do a lot of leg work to research how to set it up, so I could understand is inde
 architectural decisions that contradicted the instructions that were fed me. GitLab works the same as CodePipeline in essense. You run a bunch of Linux commands in 
 order. The difference was in the complexity of making it run on Kubernetes and as a service hosted on my bastion rather than having that leg work done for me by AWS. 
 This entailed installing GitLab on my instance and giving it the permissions TO BE ACCESSED BY the runner and AgentK, there are 2 separate tokens needed to do this. The 
-agent token and the runner token. The Runner token is like the Linux instance that runs the build script in CodePipeline, it executes the commands, builds an image 
-and sends it to ECR. It then sends the deploy command back to GitLab running on my bastion which readies it for AgentK to call, AgentK is a pod with a RBAC permission 
-to access the Kube API, UNDER A NARROW BAND OF CONFIGURED CONDITIONS (that the GitLab instance has the proper Token and that the project being deployed is in the configured
-allow list). 
+agent token and the runner token. The Runner is like the Linux instance that runs the build script in CodePipeline, it executes the commands, tests the code, runs the 
+build, sends it to ECR, and then sends the deployment commands (it cannot deploy itself only the Kube cluster can do that just like CloudFormation the Linux instance does 
+not deploy to CloudFormation it sends the command to CF to Deploy). Each phase that the runner executes occurs in its own container. I used a small container for tests 
+(a bare node container for the fontend and a bare gradle container for the backends), Kaniko I used for the build phase in both pipelines as it is capable of building 
+images without using Docker (the runner is a sequence of of three images 1 for each phase, kube uses docker to deploy each of these three instances if I deployed a docker 
+image instead of Kaniko to build the image than I would be deploying docker using docker which creates problems that go over my head, it might just be too  meta?). Kaniko 
+is lighter weight than dock and also does the job of sending the image, once built, to ECR (the runner has been given an IAM role scoped to this task). A small alpine 
+container loaded with KubeCtl sends the command back to the GitLab instance hosted on the bastion, which readies it for AgentK to call. AgentK is a pod with a RBAC 
+permission allowing it to access the Kube API, UNDER A NARROW BAND OF CONFIGURED CONDITIONS (that the GitLab instance has the proper Token and that the project being 
+deployed is in the configured allow list). K8s reads this command and executes the deployment. 
 
 Application Architecture 
 The application started out monolithic but I quickly realised that it made more sense to break it up into 3 different microservice. The nature of the application of owners
-connecting dogs with care organisations to employees under those organisations handling the dogs made it clear that there werer 3 different sets of users, owners, 
+connecting dogs with care organisations to employees under those organisations handling the dogs made it clear that there werer 3 different sets of users; owners, 
 organizations and emplyees. Each of these three groups would use the application at different rates, for different purposes, and with different amounts of each type of 
 user. A single monolithic architecture for that wouldn't be very sensible. So In the frontend I created 3 services, owner service, user service and organization service 
-and I created a backend or each service. This meant that each service handle a single type of user and that each user can authenticate to their repecive backend. 
+and I created a backend or each service. This meant that each service handles a single type of user and that each user can authenticate to their repecive backend. 
 
 Coding the application
 This is where I was able to take my vibe coding and really test it on the screen that it worked and did what it was supposed to. I resolved errors like lazy initialization,
-open up the API calls needed for resistration in SpringSecurity, tweaked the components on the frontend so the the features functioned on the frontend how I wanted. 
-I got a better sense of how to effectively use AI, like when implementing features I needed to ensure that the API call from the frontend traveled all the way to the 
-database, I took a fine toothed approach to developing the application and told it to implement features one API call at a time, ensure that each through line was 
-implemented throughly. 
+open up the API calls needed for resistration in SpringSecurity, tweaked the components on the frontend so the features functioned on the frontend how I wanted, and 
+filled in end points for features. I got a better sense of how to effectively use AI, like when implementing features I needed to ensure that the API call from the frontend 
+traveled all the way to the database, I took a fine toothed approach to developing the application and told it to implement features one API call at a time, ensuring that each 
+through line was implemented throughly. I learned to use plan mode for large tasks, I learned that organizing the file structure was helpful to both me and the AI, I learned 
+to push after each feature was completed so that I could monitor and debug with the screen, I learned to always try and consolidate code so that you do not have AI writing 
+the same thing twice but in different ways (and now you have twice the amount of technical debt). I also learned how to code better, when to use JSON ignore or a DTO, how 
+to add local variables so that information about the type of session can be maintained while navigating the single page application, the current NIST guidance for password 
+validation and how to implement it, as well as familiarizing myself with coding in a kube environment and looking up logs and debugging. 
 
 Security Considerations in the application 
 there were a few benchmarks I wanted to hit and I was checking the AI make sure that they were done correctly. 
 1. I wanted the passwords to be encrypted 
-2. I wanted the makesure that PII wasn't leaked so I checked the sessions against the database in eveery API call so that it was certain that if someone was lookinng at a 
+2. I wanted the makesure that PII wasn't leaked so I checked the sessions against the database in every API call so that it was certain that if someone was lookinng at a 
 piece of information it was tied to what they should be allowed to look at. Like when an Owner calls GetDog to see their own dog the api call is not GetDog(dogId) it is 
-GetDog(dogID, OwnerID), and it validates against the database the sessions of the logged in owner that they can only see their own dog. 
+GetDog(dogID, OwnerID), and it validates against the database the sessions of the logged in owner so that they can only see their own dog. 
 3. I made sure that there was Password validation on the frontend, I used NIST guidelines, the recommendation being that you check the password not for complexity but 
-against a list of the most commonly bruteforced passwords to make sure that it is not easily guessed I used an inbuilt dependency in Angluar for this zxcvbn. I chose 
+against a list of the most commonly bruteforced passwords to make sure that it is not easily guessed I used an inbuilt dependency in Angluar for this (zxcvbn). I chose 
 to do it this way because as a short cut when I was developing I didn't add password validation, and made all of the test passwords "pass" just to make life easier for 
 myself. My Norton password manager saved this and 3 second later notified me that my password had been stolen. So I deleted all of the users in my database and started
 over with proper validation, using my password manager to save these passwords. 
-4. SpringSecurity is configured to only accepts traffic originating from the doggyapp.click address, hopefully meaning that XSRF attacks will be styied. 
+4. SpringSecurity is configured to only accepts traffic originating from the doggyapp.click address, hopefully meaning that XSRF attacks will be stymied. 
 5. I registered an address for the site so that I could attach a certificate to it and connect it to my loadbalancer. This means that it is HTTPS. Which was suprisingly 
 easy to do with AWS and Kubernetes as the core technologies. 
+6. And sort of obviously, I wanted to use spring and angluar because these frameworks have security built in, like scrubbing SQL injection attacks. 
 
 Cost 
 I wanted to be able to afford to host this, so I provisioned the Kube node instances as spot instances and this has shaved off half the cost from my monthy expenses
