@@ -1,4 +1,5 @@
-This is a ordered sequence of refelctions on the process of building the DoggyApp. Many are being done well after the time that I wrote the code but these are the learning expereinces that stuck with me. 
+This is a ordered sequence of refelctions on the process of building the DoggyApp. Many are being done well after the time that I wrote the code but these are the 
+learning expereinces that stuck with me. 
 
 Cloud Formation Development
 I was struck by how well developed the AWS documentation is. Using CLoudFormation you are able to see all details of the configuration of the resource you are 
