@@ -2,30 +2,36 @@
 
 ## 1.0 Purpose
 
-The purpose of the application is to provide dog trainers a platform on which they can record, and maintain notes on the dogs they are training. These notes are to comment on behavior and training progress, and are sharable across trainers, walkers, and carers we well as with the owners. (My sister is a Dog trainer and approached with the "I have a great idea", this is a meandering 2 years and 3 certifications later).
+The purpose of the application is to provide dog owners a platform on which they can record, and maintain notes on their dogs and share those note with trainers and other dog carers, as well as between other owners. These notes will be editable by professinoal dog carers creating a single point of truth with high quality information on the dogs needs and personality that is available to those who needed it. This information will evolve though time to match the growth of the dog. 
 
 ## 2.0 Table of Contents
 
-**"CloudFormationArchitecture"** provisions the AWS resources to host the appliction; the VPC; the Kubernetes Cluster; and the bastion host to manage it. While also provisioning security groups, keys, IAM roles, and storage for these things to run effectively and securely. The startup script written in the EC2 instance does a lot of leg work it automatically installs, git (and clones the KubernetesArchitecture repo), AWS CLI V2, Python-10 (and needed libraries), Ansible (and needed modules), Kubectl, and EKS (which doesn't end up being needed), it also automatically creates the AWS configuration files needed to access AWS CLI, it sets the .kube config with the proper context of the doggy-kube-cluster, runs the ansbile script from the py-10 virtual environment creating the entire application environment, and then populates the .bashrc file with helpful commands that automatically sets the kube environment to the doggy-cluster, and sets the virtual environment to py-10, so that everything is ready to go everytime you log into ec2-user (you can only run the latest kube enabled version of Ansible with py-10, and the native ec2 python version is 3, so you need a virtual environment for py-10 that doeesn't interfere with the native logic). It also sets commands "setup" and "teardown" that run the ansible setup.yaml and ansile teardown.yaml files from any directory. It also creates a log file for the whole process in /var/log/user-data.log. It uses the set -e command to stop the script if any of the commands fail so that it is safer to run. 
+**"CloudFormationArchitecture"** provisions the AWS resources to host the appliction; the VPC; the Kubernetes Cluster; and the bastion host to manage it. While also provisioning security groups, keys, IAM roles, and storage for these things to run effectively and securely. The startup script written in the EC2 instanceautomatically installs the environment and configuration files needed to administer the cluster effectively. 
 
-**"KubernetesArchitecture"** orchestrates the containerised application, it will pull the images of the different microservices off of docker hub, network them together, and provide an nginx ingress controller through which the UI can be accessed, an autoscaler will also be deployed to dynamically scale this application. It also uses helm to create a monitoring suit that will collect and aggreagte logs and metrics using Prometheus, Loki and Grafana. An "Alert Analyzer" webhook has also been written with Python that will trigger on alerts from Promethius to query the logs from Loki, send them to OpenAI and recieve a LLM generated analysis, this analysis will be forwarded to a topic generated in AWS Simple Notification Service that is configured with an email address. All related IAM roles, permissions and AWS services are written and deployed through CloudFormation. It contains an Ansible playbook that will configure this whole environment with one command with indeptency and using the relevant modules whever possible, and lastly a second playbook which will tear it down so that the root stack of the CloudFormationAchitecture can be deleted from the AWS console, leaving no remnance.
+**"KubernetesArchitecture"** Contains the configuration of the orchetration environment, including helm charts, and CloudFormation stacks containing necessary periferals. Prewritten Ansible scripts automate their deployment.
 
-**"Frontend", and "registry"**, are the microservices comprising the application logic.  
+**"Frontend", "Owner-Service", "User-Service", "Organization-Service"**, are the microservices comprising the application logic.  
 - "Frontend" is the GUI were users (dog trainers) will navigate and place their requests.  
-- "registry" is where server side logic will be performed, eventually making requests to a DynamoDB database.
+- "Owner-Service" serves owners of dogs and contains their API needs. 
+- "User-Service" services dog carers ideally thought of as employees of organizations and services their needs in hte API.
+- "Organization-service" business running in the dog caring industry, are able to register employees but have their own needs that need to be met by their own API end points.
+
+- Learn more in the READMEs of each respective repository. 
 
 ## 3.0 Network Diagram 
 Edit: I moved the MGMT Bastion to be private subnet   
 Edit: There is a single Node group that spans both availability zones 
+Edit: Elasting Container Registry is also provisioned though it does not hook in directly to this architecture. 
+Edit: An ALB is connected to the Bastion EC2 for access to the GitLab pipeline deploying the microservices. 
 ![Alt text](https://github.com/DoggyApp/CloudFormationArchitecture/blob/main/DoggyAppCFArchitectureDiagram.jpg)
 
 ## 4.0 Deployment
 
-The Architecture built foundationally on AWS CloudFormation so you can see how to deploy it in the CloudFormationArchitecture README.
+The Architecture is built foundationally on AWS CloudFormation so you can see how to deploy it in the CloudFormationArchitecture README.
 
 ## 5.0 CI/CD and testing
 
-**"CloudFormationArchitecture"** - this has been deployed to AWS through CodePipeline. The buildspec.yml is viewable in the CloudFormationArchitecture, as well as the master.yaml which it pulls from. The Pipeline itself was built via the console, but in includes changesets (that allow for changes in code to be applyed via the rollback of only changed elements and their dependencies, not the rollback of the entire deployemnt), a webhook to the GitHub repository which triggers on every "git push", and a S3 bucket and ec2 where the the project is saved and then built for deployment by AWS CodeBuild.
+**"CloudFormationArchitecture"** - this has been deployed to AWS through CodePipeline. The buildspec.yml is viewable in the CloudFormationArchitecture, as well as the master.yaml which it pulls from. The Pipeline itself was built via the console, but in includes changesets (that allow for changes in code to be applyed via the rollback of only changed elements and their dependencies, not the rollback of the entire deployemnt), a webhook to the GitHub repository triggers on every "git push".
 
 ## 6.0 Security considerations and best practices
 
@@ -68,10 +74,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 ## 8.0 Roadmap (in no general order...)
 
-- Build a dedicated testing environment for the application on ElasticBeanstalk and intergrate a Jenknins pipeline for the frontend and backend, so that proper development can begin on the application itself.   
-  > It needs the core features of the application built   
-  > Also Development of the application shouldn't happen in the production environment both for cost and for security.  
-  > It would be ideal if I could also feature a staging environment where the application could automatically deploy to production after the tests have passed, I would be shocked if Jenkins couldn't this. 
+- Build a dedicated testing environment for the application on ElasticBeanstalk. The cost of hosting it is $350 a month a cheaper alternative until most of the work is out of the way would be ideal. 
 
 - Deep dive into the monitoring suit...  
   > Collect logs and forward alerts not just from the frontend and backend but also from other namespaces and pods.  
@@ -79,7 +82,8 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > Practice these skills in a security conscious way to alert to potential vulernabilites and exploitations.
 
 - Perform a suit of testing...  
-  > Load testing to ensure that the architecture can properly handle stress.  
+  > Stress testing to ensure that the architecture can properly handle load.
+  > Fuzz testing to find bugs a vulnerabilities. 
   > Deep dive into the various forms of testing that an application needs (the monitoring suit will be helpful here...)
 
 - Bolster security...
@@ -92,11 +96,6 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > Delving more into application security and AWS security to make sure that the whole structure is secure...
   > * Implement AWS WAF and maybe CloudWatch, or see what I can do with Grafana and Loki.
   > * Implement AWS security scanning features and see how they compare to Nessus (using multiple scanning tools provides defence in depth). 
-
-- Potentially see if I can run the nodes, or the bastion on Spot Instances to lower costs, at the moment it's just a demo project, and there is no perminant storage on it.  
-  > Create a helper tool that will identify the best spots to run the nodes and bastion, and can automatically redeploy it if I'm ejected. The ansible script is indepotent so I don't have to worry about the bastion start up script creating any issues with the cluster.
-
-- Intergrate permanent storage on the cluster and see if I can start a Postgres database.
 
 - Rewrite the CloudFormation code in Terraform, just so I can pick it up.
 
@@ -115,11 +114,15 @@ This code is primarily for recruiters to evaluate my skills and because I find i
 ### 1.0 Current knowedge base
 
 - Managing and Troubleshooting PCs, Exams 220-1101 and 220-1102. Mike Meyers (A+ certified COPM001022717560)  
-- CCNA 200-301 Offical Cert Guide. Wendell Odom (CCNA certified CSCO14594715)  
+- CCNA 200-301 Offical Cert Guide. Wendell Odom (CCNA certified CSCO14594715)
+- Security+ Study Guide. Mike Chappel and David Seidl. (Security+ certified COMP001022717560)
 - AWS Cloud Practitioner certified NLG17CCC7EBQQZWV  
 - LFS101x: Introduction to Linux. Linux Foundation 4dfe9e9668784cae9e0d59fdff01b35b
 - Dive into Ansible - Beginner to expert in Ansible. James Spurin (Udemy).
-- Kubernetes hands on - Deploy microservices to the AWS cloud. Richard Chesterwood. (Udemy) 
+- Kubernetes hands on - Deploy microservices to the AWS cloud. Richard Chesterwood. (Udemy)
+- The Elements of Computing Systems, build a modern computer from first principles (check out my NandToTetris repo)
+- Operating Systems Three Easy Pieces, Remzi and Andrea Arpaci-Dusseau (part I - Virtualization)
+- Python Crash Course, Eric Matthes
 - Full stack java development boot camp at Revature (Springboot and Angular)  
   - Spring  
     > Unit and Intergratin testing in Springboot  
@@ -139,8 +142,8 @@ Brett Gillett - Deploying EKS using CloudFormation - Session #1. Session#2 and S
 
 ### 2.0 Currently working on
 
-- Security+ Study Guide. Mike Chappel and David Seidl.  
-- Certified Kubernetes Administrator (CKA) Study Guide, In depth guidance. Benjamin Muschko.
+- User Story Mapping, Jeff Peterson 
+- Mastering Kubernetes (Gigi Sayfan) 
 
 ### 3.0 Wishlist for this project
 
