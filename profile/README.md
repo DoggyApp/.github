@@ -74,16 +74,22 @@ Here you can see the CPU usage of the containers in my default namespace, this b
 
 ## 8.0 Roadmap (in no general order...)
 
-- Build a dedicated testing environment for the application on ElasticBeanstalk. The cost of hosting it is $350 a month a cheaper alternative until most of the work is out of the way would be ideal. 
+- Build a dedicated staging environment for the application on ElasticBeanstalk. The cost of hosting it is $350 a month a cheaper alternative until most of the work is out of the way would be ideal.
+
+- Develop Helm charts for environment-specific config management.
+
+- Develop a backup strategy and test a restore for the EFS database, using Flyway or LiquidBase. 
 
 - Deep dive into the monitoring suit...  
   > Collect logs and forward alerts not just from the frontend and backend but also from other namespaces and pods.  
   > Learn more about the different metrics and how to interpret them and use them to optimize.  
   > Practice these skills in a security conscious way to alert to potential vulernabilites and exploitations.
 
+- Write unit tests, I usually perform test driven development, but I wanted this appllication live as quickly as possible so that I could start job hunting. reviewing the code in a more disciploined way and writing unit, intergration and end to end testing is a process that I need to do. 
+
 - Perform a suit of testing...  
   > Stress testing to ensure that the architecture can properly handle load.
-  > Fuzz testing to find bugs a vulnerabilities. 
+  > Fuzz testing to find bugs and vulnerabilities. 
   > Deep dive into the various forms of testing that an application needs (the monitoring suit will be helpful here...)
 
 - Bolster security...
