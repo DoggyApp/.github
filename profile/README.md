@@ -100,7 +100,7 @@ Here you can see the CPU usage of the containers in my default namespace, this b
   > * intergrating security tools  
   > * deep diving into kubernetes security...  
   > Delving more into application security and AWS security to make sure that the whole structure is secure...
-  > * Implement AWS WAF and maybe CloudWatch, or see what I can do with Grafana and Loki.
+  > * Implement AWS WAF, or see what I can do with Grafana and Loki.
   > * Implement AWS security scanning features and see how they compare to Nessus (using multiple scanning tools provides defence in depth). 
 
 - Rewrite the CloudFormation code in Terraform, just so I can pick it up.
