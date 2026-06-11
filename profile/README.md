@@ -20,7 +20,7 @@ The purpose of the application is to provide dog owners a platform on which they
 
 ## 3.0 Network Diagram 
 Edit: I moved the MGMT Bastion to be private subnet   
-Edit: There is a single Node group that spans both availability zones 
+Edit: There is a single Node group that spans both availability zones   
 Edit: Elasting Container Registry is also provisioned though it does not hook in directly to this architecture.  
 Edit: An ALB is connected to the Bastion EC2 for access to the GitLab pipeline deploying the microservices. 
 ![Alt text](https://github.com/DoggyApp/CloudFormationArchitecture/blob/main/DoggyAppCFArchitectureDiagram.jpg)
