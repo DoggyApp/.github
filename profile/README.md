@@ -54,17 +54,33 @@ Each section had their own security consideration that I delve into in their res
 
 ## 7.0 Demo 
 
-This is the full working application with all pods running. 
+You can see the successful sign on via SSO 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-19-22.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-39-31.png)
 
-This is the application running, you can see the URL is being served by an AWS load balancer. 
+This are the namespaces of the full working application. In the default namespace you can see the frontend, 3 mincorservices, and the postgres database. The Ingress in running as well as the GitLab Runner and Agent. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-42-35.png)
+
+You can also see that the stateful set up. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-50-13.png)
+
+as well as an Ingress for each service 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-54-06.png)
+
+These are the system pods, but you can see hte autoscaler is deployed and has been provisioning new nodes as the application has expanded
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-42-58.png)
+
+Here is the monitoring suit, you can see Prometheus, Grafana, Loki and Promtail working together to collect logs and metrics. As well as the custom built alert-analyzer which notifies me in the case of errors in the application. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-43-19.png)
+
+This is an older version of the application running. You can see the button triggering a backend error. 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-21-43.png) 
-
-Here is the sign that the application is properly connecting to the back and becuase the API call too the backend from the "test" button recieved "working". 
-
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-22-38.png) 
 
 Here is the Simple Notification Service spinning up correctly and serving a confirmation request to my email. This happens automatically on the start up of the environment, and it done by the ansible script. 
 
@@ -85,6 +101,13 @@ Here is Grafana serving as it should be, for security and to minimize points of 
 Here you can see the CPU usage of the containers in my default namespace, this being the registry, webapp and ingress that are running at the moment. 
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-47-33.png)
+
+As I built out the app it started to take shape here is the front page where you can see the log in buttons for each user and how they correlate to the microservice on the backend which handles they dashboard and interface with the database. You can see that it has a domain "doggyapp" and that it is service in HTTPS. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2014-04-27.png)
+
+Here is a diagram of the database 
+
 
 
 ## 8.0 Roadmap (in no general order...)
