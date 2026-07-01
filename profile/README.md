@@ -33,6 +33,21 @@ The Architecture is built foundationally on AWS CloudFormation so you can see ho
 
 **"CloudFormationArchitecture"** - this has been deployed to AWS through CodePipeline. The buildspec.yml is viewable in the CloudFormationArchitecture, as well as the master.yaml which it pulls from. The Pipeline itself was built via the console, but in includes changesets (that allow for changes in code to be applyed via the rollback of only changed elements and their dependencies, not the rollback of the entire deployemnt), a webhook to the GitHub repository triggers on every "git push".
 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2012-56-19.png)
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-00-36.png)
+
+
+**"Frontend and Backend Microservices"** - I run these on a self hosted GitLab instances, you can see in the URL that they are running at "doggy-gitlab-alb-1190081874.us-east-1.elb.amazonaws.com". The protocol is HTTP, as I do not have a cetificate for the page and as a public project security is not a concern. API keys have been placed in the git repos of each of these projects on my personal computer. I have deactivated options for new members. They have test, build and deploy stage. There is no staging environment as of yet, though I am thinking through different architectures to biild one and what sort of requirments I would like. The tests are non-existant as I have not written any unit or integration tests, this is something that I would like to do at a later point, but as a solo developer I was less concerned with documenting and validating what each piece of code was meant to do and more concerned with getting it into deployment, though I recognize it as a major short coming in the project. The build phase uses Kaniko to avoid docker in docker. And the deploy stage uses RBAC privilidges in the GitLab agent to feed "apply" commands directly to the cluster. 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-18-07.png) 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-23-59.png) 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-24-35.png) 
+
+![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-25-12.png)
+
 ## 6.0 Security considerations and best practices
 
 Each section had their own security consideration that I delve into in their respective README's in the CloudFormationArchitecture repository and the KubernetesArchitecture repository.
