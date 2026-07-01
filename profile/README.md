@@ -108,7 +108,7 @@ As I built out the app it started to take shape here is the front page where you
 
 Here is a diagram of the database 
 
-![Alt text]([https://github.com/DoggyApp/.github](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2015-12-55.png)
+![Alt text]([https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2015-12-55.png)
 
 ## 8.0 Roadmap (in no general order...)
 
