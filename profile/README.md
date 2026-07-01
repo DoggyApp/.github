@@ -110,6 +110,8 @@ Here is a diagram of the database
 
 ![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2015-12-55.png)
 
+Youc an explore each dashboard in the frontend Repo, The services are not all correctly put together, and there is more debugging I have to do to properly have everything running. But I hope to continue working on this into the furture. The only issue is the cost. Between the loadbalancers, NAT Gateways, EC2 instances (spot instances for the EKS nodes and dedicated for the MGMT bastion, as well as EKS itself, the amount comes to $350, I can't justify the expence before I land a better paying job). 
+
 ## 8.0 Roadmap (in no general order...)
 
 - Build a dedicated staging environment for the application on ElasticBeanstalk. The cost of hosting it is $350 a month a cheaper alternative until most of the work is out of the way would be ideal.
@@ -143,7 +145,7 @@ Here is a diagram of the database
 
 - Rewrite the CloudFormation code in Terraform, just so I can pick it up.
 
-- With the guidance of a robust monitoring system and Nessus, intergrate a payment system in case I decide to deploy something monetizeable. This is a longterm stretch ambition.  
+- Intergrate a payment system in case I decide to deploy something monetizeable. This is a longterm stretch ambition.  
   > Develop login with JPT tokens.  
   > Use the Nessus security scans to enure that I am PCI compliant.
 
@@ -191,5 +193,8 @@ Brett Gillett - Deploying EKS using CloudFormation - Session #1. Session#2 and S
 
 ### 3.0 Wishlist for this project
 
-- Prometheus: Up & Running: Infrastructure and Application Performance Monitoring. Brian Brazil.  
-- Kubernetes Best Practices. Brendan Burns, Eddie Villalba, Dave Strebel, Lachlan Evenson.
+- Prometheus: Up & Running: Infrastructure and Application Performance Monitoring. Brian Brazil.
+- Professional Java for Web Applications. Nicholas S. Williams.
+- Test and Analysis of Web Services. Luciano Baresi.
+- Hacking Exposed Web Applications. Joel Scambray, Vincent Liu, Caleb Sima.
+- AWS Certified Solutions Architect Study Guide. Ben Piper, David Clinton. 
