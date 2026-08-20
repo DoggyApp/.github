@@ -23,7 +23,7 @@ Edit: I moved the MGMT Bastion to be private subnet
 Edit: There is a single Node group that spans both availability zones   
 Edit: Elasting Container Registry is also provisioned though it does not hook in directly to this architecture.  
 Edit: An ALB is connected to the Bastion EC2 for access to the GitLab pipeline deploying the microservices. 
-![Alt text](https://github.com/DoggyApp/CloudFormationArchitecture/blob/main/DoggyAppCFArchitectureDiagram.jpg)
+![Alt text](https://github.com/DoggyApp/CloudFormationArchitecture/blob/main/screenshot/DoggyAppCFArchitectureDiagram.jpg)
 
 ## 4.0 Deployment
 
@@ -33,20 +33,20 @@ The Architecture is built foundationally on AWS CloudFormation so you can see ho
 
 **"CloudFormationArchitecture"** - this has been deployed to AWS through CodePipeline. The buildspec.yml is viewable in the CloudFormationArchitecture, as well as the master.yaml which it pulls from. The Pipeline itself was built via the console, but in includes changesets (that allow for changes in code to be applyed via the rollback of only changed elements and their dependencies, not the rollback of the entire deployemnt), a webhook to the GitHub repository triggers on every "git push".
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2012-56-19.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2012-56-19.png)
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-00-36.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-00-36.png)
 
 
 **"Frontend and Backend Microservices"** - I run these on a self hosted GitLab instances, you can see in the URL that they are running at "doggy-gitlab-alb-1190081874.us-east-1.elb.amazonaws.com". The protocol is HTTP, as I do not have a cetificate for the page and as a public project security is not a concern. API keys have been placed in the git repos of each of these projects on my personal computer. I have deactivated options for new members. They have test, build and deploy stage. There is no staging environment as of yet, though I am thinking through different architectures to biild one and what sort of requirments I would like. The tests are non-existant as I have not written any unit or integration tests, this is something that I would like to do at a later point, but as a solo developer I was less concerned with documenting and validating what each piece of code was meant to do and more concerned with getting it into deployment, though I recognize it as a major short coming in the project. The build phase uses Kaniko to avoid docker in docker. And the deploy stage uses RBAC privilidges in the GitLab agent to feed "apply" commands directly to the cluster. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-18-07.png) 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-18-07.png) 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-23-59.png) 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-23-59.png) 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-24-35.png) 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-24-35.png) 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-25-12.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-25-12.png)
 
 ## 6.0 Security considerations and best practices
 
@@ -56,59 +56,59 @@ Each section had their own security consideration that I delve into in their res
 
 You can see the successful sign on via SSO 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-39-31.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-39-31.png)
 
 This are the namespaces of the full working application. In the default namespace you can see the frontend, 3 mincorservices, and the postgres database. The Ingress in running as well as the GitLab Runner and Agent. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-42-35.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-42-35.png)
 
 You can also see that the stateful set up. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-50-13.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-50-13.png)
 
 as well as an Ingress for each service 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-54-06.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-54-06.png)
 
 These are the system pods, but you can see hte autoscaler is deployed and has been provisioning new nodes as the application has expanded
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-42-58.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-42-58.png)
 
 Here is the monitoring suit, you can see Prometheus, Grafana, Loki and Promtail working together to collect logs and metrics. As well as the custom built alert-analyzer which notifies me in the case of errors in the application. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2013-43-19.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2013-43-19.png)
 
 This is an older version of the application running. You can see the button triggering a backend error. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-21-43.png) 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202025-07-14%2010-21-43.png) 
 
 Here is the Simple Notification Service spinning up correctly and serving a confirmation request to my email. This happens automatically on the start up of the environment, and it done by the ansible script. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2010-27-49.png) 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202025-07-14%2010-27-49.png) 
 
 Here is the alert-analyzer correctly serving alerts through OpenAI, you can see that OpenAI correctly identified that the problem was that "Someone pressed the button" which is the hard coded exception that is called when you press the "test backed error" button on the webapp. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-12-47.png) 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202025-07-14%2011-12-47.png) 
 
 Here you can see that client-side routing works, I typed in "dev-server" into the URL because that is a common URL that bots scanning the internet will try to hit, but it will redirect to the Angular "not-found" component given any URL that does not match an nginx ingress defined path. This was helpful becuase it would trigger email alerts with errors everytime this happened, so now the alerts are quieter, becuase they are handled in browser. (There is also rate limiting configured in the ingress that will hopefully stem some of these bad requests). 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-50-40.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202025-07-14%2011-50-40.png)
 
 Here is Grafana serving as it should be, for security and to minimize points of contact with the interent I am port forwarding from my Managment bastion to my local computer, which is why it is served on localhost 3000 (instructions for port forwarding are in the KubernetesArchitecture README). You will be able to explore and see that the data source is correctly set up for Loki, and see alerts. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-05-33.png) 
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202025-07-14%2011-05-33.png) 
 
 Here you can see the CPU usage of the containers in my default namespace, this being the registry, webapp and ingress that are running at the moment. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202025-07-14%2011-47-33.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202025-07-14%2011-47-33.png)
 
 As I built out the app it started to take shape here is the front page where you can see the log in buttons for each user and how they correlate to the microservice on the backend which handles they dashboard and interface with the database. You can see that it has a domain "doggyapp" and that it is service in HTTPS. 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2014-04-27.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2014-04-27.png)
 
 Here is a diagram of the database 
 
-![Alt text](https://github.com/DoggyApp/.github/blob/main/Screenshot%20from%202026-07-01%2015-12-55.png)
+![Alt text](https://github.com/DoggyApp/.github/blob/main/screenshot/Screenshot%20from%202026-07-01%2015-12-55.png)
 
 Youc an explore each dashboard in the frontend Repo, The services are not all correctly put together, and there is more debugging I have to do to properly have everything running. But I hope to continue working on this into the furture. The only issue is the cost. Between the loadbalancers, NAT Gateways, EC2 instances (spot instances for the EKS nodes and dedicated for the MGMT bastion, as well as EKS itself, the amount comes to $350, I can't justify the expence before I land a better paying job). 
 
